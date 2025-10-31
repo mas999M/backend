@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -52,12 +54,34 @@ class OrderController extends Controller
         return response()->json($cartItem);
     }
 
-    public function checkout(Request $request)
+    public function checkout()
     {
         $user = Auth::user();
         $cart = Cart::where('user_id' , $user->id)->first();
         $cartItem = CartItem::where('cart_id' , $cart->id)->get();
 
+        $total = 0;
+        foreach ($cartItem as $item) {
+            $total += $item->quantity * $item->product->price;
+        }
+
+        $order = Order::create([
+            'user_id' => $cart->user_id,
+            'total' => $total,
+        ]);
+
+        foreach($cartItem as $item) {
+           $orderItem = OrderItem::create([
+                'order_id' => $order->id,
+                'product_id' => $item->product_id,
+                'quantity' => $item->quantity,
+            ]);
+        }
+
+        if($orderItem){
+            Cart::query()->delete();
+            CartItem::query()->delete();
+        }
 
     }
 

@@ -17,6 +17,10 @@ class Product extends Model
         'category_id',
     ];
 
+    public function OrderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
     public function CartItems()
     {
         return $this->hasMany(CartItem::class ,'product_id');

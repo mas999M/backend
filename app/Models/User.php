@@ -10,8 +10,12 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable ;
 
+    public function order()
+    {
+    return $this->hasOne(Order::class);
+    }
     public function cart()
     {
         return $this->hasOne(Cart::class , 'user_id');

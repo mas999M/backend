@@ -23,7 +23,7 @@ class ProductFactory extends Factory
         $name = $this->faker->words(3, true);
         return [
             'name' => $name,
-            'slug' => Str::slug($name),
+//            'slug' => Str::slug($name),
             'description' => $this->faker->text(),
             'category_id'=>$this->faker->numberBetween(1,10),
             'price' => $this->faker->randomFloat(2,0,1000),
