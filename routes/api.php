@@ -21,3 +21,4 @@ Route::post('add' , [OrderController::class, 'add']);
 Route::get('cart' , [OrderController::class, 'show']);
 Route::get('checkout' , [OrderController::class, 'checkout']);
 route::get('cartDelete' , [OrderController::class, 'cartDelete'])->name('cartDelete');
+Route::get('callback' , [OrderController::class, 'callback'])->name('callback');

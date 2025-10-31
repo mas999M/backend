@@ -10,7 +10,9 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-
+use Shetabit\Multipay\Invoice;
+use Shetabit\Payment\Facade\Payment;
+use Shetabit\Multipay\Exceptions\InvalidPaymentException;
 class OrderController extends Controller
 {
     public function add(Request $request)
@@ -83,7 +85,53 @@ class OrderController extends Controller
             CartItem::query()->delete();
         }
 
+        $invoice = (new Invoice())->amount((int)$total);
+
+// ساخت پرداخت با callback
+        $payment = Payment::callbackUrl(route('callback'))
+            ->purchase($invoice, function ($driver, $transactionId) use ($order) {
+                // فقط سفارش مربوطه رو آپدیت کن
+                $order->update([
+                    'transaction_id' => $transactionId,
+                ]);
+            });
+
+// گرفتن لینک پرداخت (به جای render)
+        $paymentUrl = $payment->pay()->getAction();
+
+// برگردوندن لینک به فرانت
+        return response()->json([
+            'url' => $paymentUrl,
+        ]);
+
     }
 
+    public function callback(Request $request)
+    {
+        $transaction_id = $request->get('Authority');
+
+        // پیدا کردن سفارش بر اساس transaction_id
+        $order = Order::where('transaction_id', $transaction_id)->first();
+
+        if (!$order) {
+            return redirect("http://localhost:3000/payment/fail?message=" . urlencode("سفارش پیدا نشد"));
+        }
+
+        try {
+            $receipt = Payment::amount((int)$order->total) // ✅ مبلغ واقعی سفارش
+            ->transactionId($transaction_id)
+                ->verify();
+
+            // آپدیت وضعیت سفارش
+            $order->update(['status' => 'finished']);
+
+            // هدایت به فرانت
+            return redirect("http://localhost:3000/payment/success?ref_id=".$receipt->getReferenceId());
+
+        } catch (InvalidPaymentException $exception) {
+            $order->update(['status' => 'cancelled']);
+            return redirect("http://localhost:3000/payment/fail?message=".urlencode($exception->getMessage()));
+        }
+    }
 
 }
