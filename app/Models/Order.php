@@ -9,6 +9,8 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'total',
+        'transaction_id',
+        'status',
     ];
 
     public function user()
