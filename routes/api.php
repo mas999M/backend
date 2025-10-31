@@ -19,3 +19,5 @@ Route::get('category' , [ProductController::class, 'category']);
 Route::get('products' , [ProductController::class, 'products']);
 Route::post('add' , [OrderController::class, 'add']);
 Route::get('cart' , [OrderController::class, 'show']);
+Route::get('checkout' , [OrderController::class, 'checkout']);
+route::get('cartDelete' , [OrderController::class, 'cartDelete'])->name('cartDelete');
