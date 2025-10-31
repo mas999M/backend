@@ -13,10 +13,14 @@ class Product extends Model
         'slug',
         'description',
         'price',
-        'image',
+        'image_path',
         'category_id',
     ];
 
+    public function CartItems()
+    {
+        return $this->hasMany(CartItem::class ,'product_id');
+    }
     public function category()
     {
 

@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\OrderController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -15,3 +16,6 @@ Route::get('me', [AuthController::class, 'me']);
 Route::get('logout', [AuthController::class, 'logout']);
 Route::post('product' , [ProductController::class, 'product']);
 Route::get('category' , [ProductController::class, 'category']);
+Route::get('products' , [ProductController::class, 'products']);
+Route::post('add' , [OrderController::class, 'add']);
+Route::get('cart' , [OrderController::class, 'show']);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -15,7 +16,10 @@ class ProductController extends Controller
         // 📂 ذخیره عکس (اگه وجود داشت)
         $filePath = null;
         if ($request->hasFile('image')) {
+            Log::info('File exists!');
             $filePath = $request->file('image')->store('images', 'public');
+        }else{
+            Log::warning('No file uploaded.');
         }
 
         // 📦 ذخیره محصول در دیتابیس
@@ -43,4 +47,20 @@ class ProductController extends Controller
         $category = Category::all();
         return response()->json($category);
     }
+    public function products()
+    {
+        $products = Product::all();
+
+        // اضافه کردن آدرس کامل عکس به هر محصول
+        $products->transform(function ($product) {
+            $product->image_url = $product->image_path
+                ? asset('storage/' . $product->image_path)
+                : null;
+            return $product;
+        });
+        Log::info($products);
+
+        return response()->json($products);
+    }
+
 }
