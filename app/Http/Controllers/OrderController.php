@@ -81,8 +81,8 @@ class OrderController extends Controller
         }
 
         if($orderItem){
-            Cart::query()->delete();
-            CartItem::query()->delete();
+            CartItem::where('cart_id', $cart->id)->delete();
+            Cart::where('id', $cart->id)->delete();
         }
 
         $invoice = (new Invoice())->amount((int)$total);
