@@ -49,18 +49,19 @@ class ProductController extends Controller
     }
     public function products()
     {
-        $products = Product::all();
+        // محصولات را با paginate بگیریم، مثلا 10 تا در هر صفحه
+        $products = Product::paginate(8);
 
         // اضافه کردن آدرس کامل عکس به هر محصول
-        $products->transform(function ($product) {
+        $products->getCollection()->transform(function ($product) {
             $product->image_url = $product->image_path
                 ? asset('storage/' . $product->image_path)
                 : null;
             return $product;
         });
-        Log::info($products);
 
         return response()->json($products);
     }
+
 
 }
