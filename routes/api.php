@@ -12,7 +12,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login'])->middleware(\App\Http\Middleware\GuestOnly::class);
+Route::post('login', [AuthController::class, 'login']);
 Route::get('me', [AuthController::class, 'me'])->middleware('auth:sanctum');
 Route::get('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('product' , [ProductController::class, 'product']);
@@ -22,6 +22,7 @@ Route::post('add' , [OrderController::class, 'add'])->middleware('auth:sanctum')
 Route::get('cart' , [OrderController::class, 'show'])->middleware('auth:sanctum');
 Route::get('checkout' , [OrderController::class, 'checkout'])->middleware('auth:sanctum');
 Route::get('cartDelete' , [OrderController::class, 'cartDelete'])->name('cartDelete');
-Route::get('callback' , [OrderController::class, 'callback'])->name('callback')->middleware('auth:sanctum');
+Route::get('callback' , [OrderController::class, 'callback'])->name('callback');
 
-Route::get('admin/user' , [AdminController::class, 'user']);
+Route::get('admin/order' , [AdminController::class, 'order']);
+Route::get('admin/users' , [AdminController::class, 'users']);
