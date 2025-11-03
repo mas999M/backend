@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,4 +22,40 @@ class AdminController extends Controller
         $order = Order::with('user')->get();
         return response()->json($order);
     }
+    public function update_users(Request $request)
+    {
+        $user = User::find($request->id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role,
+        ]);
+
+        return response()->json(['message' => 'User updated successfully']);
+    }
+
+    public function orders($id)
+    {
+        $orderItem = OrderItem::where('order_id', $id)
+            ->with(['product' => function($query) {
+                $query->select('id', 'name', 'image_path', 'price'); // فقط ستون‌های لازم
+            }])
+            ->get();
+
+// اگر image_path فقط مسیر داخلی است، URL بسازید
+        $orderItem->transform(function ($item) {
+            $item->product->image_url = asset('storage/' . $item->product->image_path);
+            return $item;
+        });
+
+        return response()->json($orderItem);
+
+    }
+
+
 }
