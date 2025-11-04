@@ -41,11 +41,10 @@ class AdminController extends Controller
 
     public function orders($id)
     {
-        $orderItem = OrderItem::where('order_id', $id)
-            ->with(['product' => function($query) {
-                $query->select('id', 'name', 'image_path', 'price'); // فقط ستون‌های لازم
-            }])
-            ->get();
+        $orderItem = OrderItem::where('order_id', $id)->with([
+            'product',
+            'product.category',
+        ])->get();
 
 // اگر image_path فقط مسیر داخلی است، URL بسازید
         $orderItem->transform(function ($item) {
@@ -55,6 +54,22 @@ class AdminController extends Controller
 
         return response()->json($orderItem);
 
+    }
+
+    public function userOrders($id)
+    {
+        $orderItem = OrderItem::where('order_id', $id)->with([
+            'product',
+            'product.category',
+        ])->get();
+
+// اگر image_path فقط مسیر داخلی است، URL بسازید
+        $orderItem->transform(function ($item) {
+            $item->product->image_url = asset('storage/' . $item->product->image_path);
+            return $item;
+        });
+
+        return response()->json($orderItem);
     }
 
 

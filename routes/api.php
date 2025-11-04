@@ -31,3 +31,5 @@ Route::post('admin/update-users' , [AdminController::class, 'update_users']);
 Route::get('admin/orders/{id}' , [AdminController::class, 'orders']);
 
 Route::get('user/orders' , [UserController::class, 'orders']);
+Route::post('user/update' , [UserController::class, 'update']);
+Route::get('user/orders/{id}' , [AdminController::class, 'userOrders']);
