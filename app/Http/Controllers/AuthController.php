@@ -32,7 +32,7 @@ class AuthController extends Controller
         // ایجاد session و regenerate برای جلوگیری از session fixation
         $request->session()->regenerate();
 
-        return response()->json(['message' => 'Login successful']);
+        return response()->json(['logged' => true]);
     }
 
     public function me()
