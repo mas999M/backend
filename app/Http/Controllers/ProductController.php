@@ -11,8 +11,6 @@ class ProductController extends Controller
 {
     public function product(Request $request)
     {
-
-
         // 📂 ذخیره عکس (اگه وجود داشت)
         $filePath = null;
         if ($request->hasFile('image')) {
@@ -50,7 +48,7 @@ class ProductController extends Controller
     public function products()
     {
         // محصولات را با paginate بگیریم، مثلا 10 تا در هر صفحه
-        $products = Product::paginate(8);
+        $products = Product::with('category')->paginate(100);
 
         // اضافه کردن آدرس کامل عکس به هر محصول
         $products->getCollection()->transform(function ($product) {
@@ -79,6 +77,34 @@ class ProductController extends Controller
             'image_url' => $url,
             'category' => $category,
         ]);
+    }
+
+    public function productupdate(Request $request , $id)
+    {
+        Log::info($request->all());
+
+        $product = Product::find($id);
+
+        if($request->hasFile('image')){
+            Log::info('File exists!');
+            $filePath = $request->file('image')->store('images', 'public');
+        }else{
+            Log::warning('No file uploaded.');
+        }
+
+        $product->update([
+            'name' => $request['name'] ?? $product->name ?? '',
+            'description' => $request['description'] ?? $product->description ?? '',
+            'price' => $request['price'] ?? $product->price ?? '',
+            'image_path' => $filePath ?? $product->image_path ?? '',
+        ]);
+
+        Log::info($request);
+
+        if($product){
+            return response()->json(['message' => 'Product updated successfully!']);
+        }
+
     }
 
 

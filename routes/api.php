@@ -20,6 +20,7 @@ Route::post('product' , [ProductController::class, 'product']);
 Route::get('category' , [ProductController::class, 'category']);
 Route::get('products' , [ProductController::class, 'products']);
 Route::get('product/{id}' , [ProductController::class, 'productid']);
+Route::POST('product/update/{id}' , [ProductController::class, 'productupdate']);
 Route::post('add' , [OrderController::class, 'add']);
 Route::get('cart' , [OrderController::class, 'show']);
 Route::get('checkout' , [OrderController::class, 'checkout'])->middleware('auth:sanctum');
