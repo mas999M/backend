@@ -63,5 +63,23 @@ class ProductController extends Controller
         return response()->json($products);
     }
 
+    public function productid($id)
+    {
+        $product = Product::find($id);
+        $category = $product->category;
+        // ساخت URL کامل برای عکس
+        $url = $product->image_path
+            ? asset('storage/' . $product->image_path)
+            : null;
+
+        // پاسخ JSON
+        return response()->json([
+            'message' => 'Product fetched successfully!',
+            'product' => $product,
+            'image_url' => $url,
+            'category' => $category,
+        ]);
+    }
+
 
 }

@@ -35,5 +35,8 @@ class UserController extends Controller
            'bio' => $request['bio'] ?? $user->bio ?? '',
            'password' => $request['password'] ?? $user->password ?? '',
        ]);
+       if($user){
+           return response()->json(['updated' => true]);
+       }
     }
 }

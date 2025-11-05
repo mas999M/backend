@@ -19,6 +19,7 @@ Route::get('logout', [AuthController::class, 'logout'])->middleware('auth:sanctu
 Route::post('product' , [ProductController::class, 'product']);
 Route::get('category' , [ProductController::class, 'category']);
 Route::get('products' , [ProductController::class, 'products']);
+Route::get('product/{id}' , [ProductController::class, 'productid']);
 Route::post('add' , [OrderController::class, 'add']);
 Route::get('cart' , [OrderController::class, 'show']);
 Route::get('checkout' , [OrderController::class, 'checkout'])->middleware('auth:sanctum');
@@ -33,3 +34,4 @@ Route::get('admin/orders/{id}' , [AdminController::class, 'orders']);
 Route::get('user/orders' , [UserController::class, 'orders']);
 Route::post('user/update' , [UserController::class, 'update']);
 Route::get('user/orders/{id}' , [AdminController::class, 'userOrders']);
+
