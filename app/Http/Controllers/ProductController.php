@@ -48,7 +48,7 @@ class ProductController extends Controller
     public function products()
     {
         // محصولات را با paginate بگیریم، مثلا 10 تا در هر صفحه
-        $products = Product::with('category')->paginate(100);
+        $products = Product::with('category')->paginate(8);
 
         // اضافه کردن آدرس کامل عکس به هر محصول
         $products->getCollection()->transform(function ($product) {
@@ -106,6 +106,7 @@ class ProductController extends Controller
         }
 
     }
+
 
 
 }
