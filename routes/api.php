@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -36,3 +37,6 @@ Route::get('user/orders' , [UserController::class, 'orders']);
 Route::post('user/update' , [UserController::class, 'update']);
 Route::get('user/orders/{id}' , [AdminController::class, 'userOrders']);
 
+Route::get('category',[CategoryController::class, 'index']);
+Route::post('category/products' , [CategoryController::class, 'ca']);
+Route::get('category/{id}' , [CategoryController::class, 'name']);

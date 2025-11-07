@@ -17,16 +17,28 @@ class OrderController extends Controller
 {
     public function add(Request $request)
     {
+
         $user = Auth::user();
-        (int)$id = $request->input('id');
+        (int)$id = $request->id;
         $cart = Cart::firstOrCreate(['user_id' => $user->id]);
         $product = Product::find($id);
-        Log::info($product);
+        (int)$quantity = $request->quantity;
+        Log::info($quantity);
+        Log::info($id);
 
         $cartItem = CartItem::where('cart_id' , $cart->id)->where('product_id' , $product->id)->first();
-        if($cartItem){
+        if($cartItem && $quantity <= 1){
             $cartItem->quantity = $cartItem->quantity + 1;
             $cartItem->save();
+        }elseif($cartItem && $quantity > 1){
+            $cartItem->quantity = $quantity + $cartItem->quantity;
+            $cartItem->save();
+        }elseif(!$cartItem && $quantity > 1){
+            $cartItem = CartItem::create([
+                'cart_id' => $cart->id,
+                'product_id' => $product->id,
+                'quantity' => $quantity,
+            ]);
         }else{
             $cartItem = CartItem::create([
                 'cart_id' => $cart->id,
@@ -35,7 +47,10 @@ class OrderController extends Controller
             ]);
         }
 
-        return $cartItem;
+        if($cartItem){
+            return response()->json('added');
+        }
+
     }
 
     public function show()
