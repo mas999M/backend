@@ -40,3 +40,5 @@ Route::get('user/orders/{id}' , [AdminController::class, 'userOrders']);
 Route::get('category',[CategoryController::class, 'index']);
 Route::post('category/products' , [CategoryController::class, 'ca']);
 Route::get('category/{id}' , [CategoryController::class, 'name']);
+
+Route::post('search' , [productController::class, 'search']);
