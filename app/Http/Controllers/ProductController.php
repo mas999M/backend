@@ -107,6 +107,13 @@ class ProductController extends Controller
 
     }
 
+    public function search(Request $request)
+    {
+        $searchname = $request->get('search');
+        $products = Product::whereLike('name' , '%'.$searchname.'%')->paginate(8);
+        return response()->json($products);
+    }
+
 
 
 }
