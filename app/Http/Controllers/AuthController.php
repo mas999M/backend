@@ -17,6 +17,10 @@ class AuthController extends Controller
         $user->password = Hash::make($request->input('password'));
         $user->save();
 
+        Auth::login($user);
+        $request->session()->regenerate();
+        return "loggeeeeddd   horaaaaaaaaaaaa";
+
     }
     public function login(Request $request)
     {

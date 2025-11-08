@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdminOnly
@@ -18,8 +19,9 @@ class AdminOnly
     {
         $user = Auth::user();
         if($user->role === 'admin'){
+            Log::info('this is middleware log khkhhkkhkkhhkkh');
             return $next($request);
         }
-        return response()->json(['error' => 'you are not admin ! '], Response::HTTP_UNAUTHORIZED);
+        return response()->json(['error' => 'you are not admin ! '],403);
     }
 }

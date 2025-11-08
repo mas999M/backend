@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -54,6 +55,23 @@ class AdminController extends Controller
 
         return response()->json($orderItem);
 
+    }
+
+
+    public function products()
+    {
+        // محصولات را با paginate بگیریم، مثلا 10 تا در هر صفحه
+        $products = Product::with('category')->paginate(100);
+
+        // اضافه کردن آدرس کامل عکس به هر محصول
+        $products->getCollection()->transform(function ($product) {
+            $product->image_url = $product->image_path
+                ? asset('storage/' . $product->image_path)
+                : null;
+            return $product;
+        });
+
+        return response()->json($products);
     }
 
     public function userOrders($id)
