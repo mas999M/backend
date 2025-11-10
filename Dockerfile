@@ -19,7 +19,6 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 
 # تنظیم nginx
 RUN rm /etc/nginx/sites-enabled/default
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 # expose port
 EXPOSE 8000
