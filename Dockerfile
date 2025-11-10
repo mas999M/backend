@@ -11,7 +11,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 RUN composer install --no-dev --optimize-autoloader
 
-RUN php artisan key:generate
+RUN #php artisan key:generate
 
 EXPOSE 8000
 
