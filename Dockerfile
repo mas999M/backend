@@ -21,4 +21,5 @@ RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
 EXPOSE 8000
 
 # استفاده از PORT محیطی Railway
-CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
+CMD php artisan serve --host=0.0.0.0 --port=8000
+
