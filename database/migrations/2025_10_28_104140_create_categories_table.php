@@ -16,6 +16,18 @@ return new class extends Migration
             $table->string('name');
             $table->timestamps();
         });
+
+        // اضافه کردن ۸ مقدار اولیه
+        \Illuminate\Support\Facades\DB::table('categories')->insert([
+            ['name' => 'Technology', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Health', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Education', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Sports', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Entertainment', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Travel', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Food', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Fashion', 'created_at' => now(), 'updated_at' => now()],
+        ]);
     }
 
     /**
