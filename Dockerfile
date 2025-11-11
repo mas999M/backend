@@ -5,7 +5,7 @@ WORKDIR /app
 COPY . .
 
 # نصب پیش‌نیازها و اکستنشن‌های لازم PHP
-RUN apt-get update && apt-get install -y unzip git curl libzip-dev zip libonig-dev libpng-dev libxml2-dev \
+RUN apt-get update && apt-get install -y unzip git curl libzip-dev zip libonig-dev libpng-dev libxml2-dev default-mysql-client \
     && docker-php-ext-install zip pdo_mysql mbstring gd bcmath
 
 # نصب Composer
@@ -17,12 +17,12 @@ RUN composer install --no-dev --optimize-autoloader
 # تنظیم مجوزها
 RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
 
-# پورت پیش‌فرض لاراول
+# پورت لاراول
 EXPOSE 8000
 
 # اضافه کردن اسکریپت راه‌اندازی
 COPY ./start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 
-# اجرای اسکریپت راه‌اندازی
+# اجرای اسکریپت
 CMD ["/app/start.sh"]

@@ -2,19 +2,18 @@
 
 echo "⏳ در حال انتظار برای آماده شدن دیتابیس MySQL..."
 
-# بررسی اتصال به MySQL قبل از شروع
-until mysqladmin ping -h"$DB_HOST" -u"$DB_USERNAME" -p"$DB_PASSWORD" --silent; do
-    echo "🔁 در انتظار دیتابیس..."
+# بررسی اتصال تا زمانی که دیتابیس آماده بشه
+until mysqladmin ping -h"$DB_HOST" -u"$DB_USERNAME" -p"$DB_PASSWORD" --port="$DB_PORT" --silent; do
+    echo "🔁 منتظر اتصال به دیتابیس در $DB_HOST:$DB_PORT ..."
     sleep 3
 done
 
 echo "✅ دیتابیس آماده است!"
 
-# اجرای migrate
+# اجرای migrate و seed
 echo "🚀 اجرای migrate..."
 php artisan migrate --force
 
-# اجرای seeder
 echo "🌱 اجرای db:seed..."
 php artisan db:seed --force
 
